@@ -1,4 +1,4 @@
-# Screening Task 3: Surrogate Modeling of Binary Distillation Column
+# Surrogate Modeling of Binary Distillation Column
 
 ## Overview
 This repository provides a machine learning surrogate framework for a Benzene-Toluene distillation column modeled with the Peng-Robinson equation of state in DWSIM.
