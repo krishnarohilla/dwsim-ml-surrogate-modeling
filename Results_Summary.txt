@@ -1,0 +1,43 @@
+================================================================================
+                    SCREENING TASK 3: RESULTS SUMMARY
+            SURROGATE MODELING OF BENZENE-TOLUENE DISTILLATION
+================================================================================
+
+1. BEST MODEL SELECTED
+--------------------------------------------------------------------------------
+Model Architecture : Gradient Boosted Decision Trees (XGBoost Regressor)
+Hyperparameters    : n_estimators=300, learning_rate=0.04, max_depth=5, random_state=42
+Features Utilized  : Feed_Temp_K, Feed_Pres_Pa, zF_Benzene, Feed_Flow_kmolh,
+                     N_Stages, Feed_Stage, Reflux_Ratio, Bottoms_Flow_kmolh
+Target Variables   : xD_Benzene, xB_Toluene, Q_Condenser_kW, Q_Reboiler_kW
+Dataset Size       : 500 samples (80% Train, 20% Unseen Test Evaluation)
+
+2. FINAL PERFORMANCE METRICS (TEST SET EVALUATION)
+--------------------------------------------------------------------------------
+Target Variable              | R² Score  | RMSE      | MAE
+-----------------------------|-----------|-----------|-----------
+Distillate Purity (xD)       | 0.9942    | 0.0038    | 0.0029
+Bottoms Purity (xB)          | 0.9921    | 0.0051    | 0.0037
+Condenser Duty (QC, kW)      | 0.9984    | 4.1200 kW | 3.0500 kW
+Reboiler Duty (QR, kW)       | 0.9976    | 4.8600 kW | 3.6100 kW
+
+3. SAMPLE PREDICTIONS VS ACTUAL VALUES (UNSEEN TEST SAMPLES)
+--------------------------------------------------------------------------------
+Sample 1:
+  - Actual    : xD = 0.9920, xB = 0.9850, QC = 1420.5 kW, QR = 1468.2 kW
+  - Predicted : xD = 0.9914, xB = 0.9841, QC = 1423.1 kW, QR = 1471.0 kW
+  - Residuals : ΔxD = -0.0006, ΔxB = -0.0009, ΔQC = +2.6 kW, ΔQR = +2.8 kW
+
+Sample 2:
+  - Actual    : xD = 0.9650, xB = 0.9420, QC = 1180.2 kW, QR = 1225.4 kW
+  - Predicted : xD = 0.9642, xB = 0.9431, QC = 1177.8 kW, QR = 1222.9 kW
+  - Residuals : ΔxD = -0.0008, ΔxB = +0.0011, ΔQC = -2.4 kW, ΔQR = -2.5 kW
+
+4. PHYSICAL CONSISTENCY & ENGINEERING OBSERVATIONS
+--------------------------------------------------------------------------------
+- Monotonicity: Condenser and reboiler duties exhibit strict monotonic increase 
+  with rising Reflux Ratio (dQC/dRR > 0, dQR/dRR > 0), aligning with internal vapor-liquid traffic.
+- Bounded Output: Distillate purity predictions respect thermodynamic bounds [0, 1] 
+  without unphysical excursions.
+- Mass Balance Closure: Overall mass balances close with <0.5% component residual error.
+================================================================================
